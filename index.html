@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sana Küçük Bir Mesajım Var ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .screen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transition: opacity 1.2s ease;
+      }
+
+      .hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 35px 40px;
+        border-radius: 25px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        animation: fadeInUp 1.5s ease;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 30px;
+        background: white;
+        color: #ff5f9e;
+        cursor: pointer;
+      }
+
+      .counter {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .box {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 15px 20px;
+        border-radius: 15px;
+        min-width: 90px;
+      }
+
+      .number {
+        font-size: 1.8rem;
+        font-weight: bold;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(25px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 💕 Kalpler */
+      .heart {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 18px;
+        animation: floatUp 6s linear infinite;
+      }
+
+      @keyframes floatUp {
+        from {
+          transform: translateY(100vh) scale(0.8);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-10vh) scale(1.4);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 1️⃣ İlk ekran -->
+    <div class="screen" id="screen1">
+      <div class="card">
+        <h1>Sana küçük bir mesajım var ❤️</h1>
+        <p>Hazırsan okumaya başlayabilirsin</p>
+        <button onclick="goToCounter()">Oku</button>
+      </div>
+    </div>
+
+    <!-- 2️⃣ Sayaç ekranı -->
+    <div class="screen hidden" id="screen2">
+      <div class="card">
+        <h1>Sevgilim</h1>
+        <p>İlk günden bu yana</p>
+
+        <div class="counter">
+          <div class="box">
+            <div class="number" id="days">0</div>
+            Gün
+          </div>
+          <div class="box">
+            <div class="number" id="hours">0</div>
+            Saat
+          </div>
+          <div class="box">
+            <div class="number" id="minutes">0</div>
+            Dakika
+          </div>
+          <div class="box">
+            <div class="number" id="seconds">0</div>
+            Saniye
+          </div>
+        </div>
+        <p>Zaman geçti.</p>
+
+        <p style="margin-top: 20px">ve her saniye seni daha çok seviyorum 💖</p>
+
+        <button onclick="goToFinal()">Devam et</button>
+      </div>
+    </div>
+
+    <!-- 3️⃣ Final ekranı -->
+    <div class="screen hidden" id="screen3">
+      <div class="card">
+        <h1>Seni Çok Seviyorum ❤️</h1>
+        <p>İyi ki hayatımdasın, iyi ki hayatımsın.</p>
+      </div>
+    </div>
+
+    <script>
+      const startDate = new Date(2025, 9, 9, 13, 0, 0); // Ekim = 9
+      let timer;
+
+      function goToCounter() {
+        document.getElementById("screen1").classList.add("hidden");
+        document.getElementById("screen2").classList.remove("hidden");
+
+        if (navigator.vibrate) navigator.vibrate(100);
+
+        updateCounter();
+        timer = setInterval(updateCounter, 1000);
+      }
+
+      function goToFinal() {
+        document.getElementById("screen2").classList.add("hidden");
+        document.getElementById("screen3").classList.remove("hidden");
+
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      }
+
+      function updateCounter() {
+        let diff = Math.floor((new Date() - startDate) / 1000);
+
+        const days = Math.floor(diff / 86400);
+        diff %= 86400;
+        const hours = Math.floor(diff / 3600);
+        diff %= 3600;
+        const minutes = Math.floor(diff / 60);
+        const seconds = diff % 60;
+
+        daysEl.innerText = days;
+        hoursEl.innerText = hours;
+        minutesEl.innerText = minutes;
+        secondsEl.innerText = seconds;
+      }
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+
+      /* 💕 Kalp üretici */
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = 14 + Math.random() * 20 + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 6000);
+      }, 400);
+    </script>
+  </body>
+</html>
