@@ -112,12 +112,26 @@
       <div class="card">
         <h1>Sana küçük bir mesajım var ❤️</h1>
         <p>Hazırsan okumaya başlayabilirsin</p>
-        <button onclick="goToCounter()">Oku</button>
+        <button onclick="goToMessage()">Oku</button>
+      </div>
+    </div>
+
+    <!-- Mesaj ekranı -->
+    <div class="screen hidden" id="screen2">
+      <div class="card">
+        <h1>Sevgilim</h1>
+        <p>
+          Seninle geçirdiğim ilk sevgililer günü ve asla son sevgililer günü
+          değil. Seninle geçirdiğim her an çok özeldi ve çok güzeldi. Beni hep
+          mutlu çok mutlu ettin hayatım. Seni herkesten daha çok seviyor ve
+          değer veriyorum. En değerlimsin. ❤️
+        </p>
+        <button onclick="goToCounter()">Devam et</button>
       </div>
     </div>
 
     <!-- 2️⃣ Sayaç ekranı -->
-    <div class="screen hidden" id="screen2">
+    <div class="screen hidden" id="screen3">
       <div class="card">
         <h1>Sevgilim</h1>
         <p>İlk günden bu yana</p>
@@ -140,7 +154,7 @@
             Saniye
           </div>
         </div>
-        <p>Zaman geçti.</p>
+        <p>zaman geçti</p>
 
         <p style="margin-top: 20px">ve her saniye seni daha çok seviyorum 💖</p>
 
@@ -149,7 +163,7 @@
     </div>
 
     <!-- 3️⃣ Final ekranı -->
-    <div class="screen hidden" id="screen3">
+    <div class="screen hidden" id="screen5">
       <div class="card">
         <h1>Seni Çok Seviyorum ❤️</h1>
         <p>İyi ki hayatımdasın, iyi ki hayatımsın.</p>
@@ -160,9 +174,16 @@
       const startDate = new Date(2025, 9, 9, 13, 0, 0); // Ekim = 9
       let timer;
 
-      function goToCounter() {
+      function goToMessage() {
         document.getElementById("screen1").classList.add("hidden");
         document.getElementById("screen2").classList.remove("hidden");
+
+        if (navigator.vibrate) navigator.vibrate(100);
+      }
+
+      function goToCounter() {
+        document.getElementById("screen2").classList.add("hidden");
+        document.getElementById("screen3").classList.remove("hidden");
 
         if (navigator.vibrate) navigator.vibrate(100);
 
@@ -171,9 +192,10 @@
       }
 
       function goToFinal() {
-        document.getElementById("screen2").classList.add("hidden");
-        document.getElementById("screen3").classList.remove("hidden");
+        document.getElementById("screen3").classList.add("hidden");
+        document.getElementById("screen5").classList.remove("hidden");
 
+        clearInterval(timer);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       }
 
