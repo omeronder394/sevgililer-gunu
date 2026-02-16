@@ -56,7 +56,7 @@
 
       .counter {
         display: flex;
-        gap: 15px;
+        gap: 10px;
         justify-content: center;
         flex-wrap: wrap;
         margin-top: 20px;
@@ -64,9 +64,9 @@
 
       .box {
         background: rgba(255, 255, 255, 0.25);
-        padding: 15px 20px;
+        padding: 10px 15px;
         border-radius: 15px;
-        min-width: 90px;
+        min-width: 70px;
       }
 
       .number {
@@ -115,28 +115,46 @@
         <button onclick="goToMessage()">Oku</button>
       </div>
     </div>
+    <!-- Önemli not ekranı -->
+    <div class="screen hidden" id="screen2">
+      <div class="card">
+        <h1>ÖNEMLİ BİR NOT</h1>
+        <p>
+          Bu site sadece ve sadece SEVGİLİM Elif Esila Gençer adına yapılmıştır.
+        </p>
+        <button onclick="goToMessage2()">Devam et</button>
+      </div>
+    </div>
 
     <!-- Mesaj ekranı -->
-    <div class="screen hidden" id="screen2">
+    <div class="screen hidden" id="screen3">
       <div class="card">
         <h1>Sevgilim</h1>
         <p>
           Seninle geçirdiğim ilk sevgililer günü ve asla son sevgililer günü
           değil. Seninle geçirdiğim her an çok özeldi ve çok güzeldi. Beni hep
-          mutlu çok mutlu ettin hayatım. Seni herkesten daha çok seviyor ve
-          değer veriyorum. En değerlimsin. ❤️
+          çok mutlu ettin hayatım. Seni herkesten daha çok seviyor ve değer
+          veriyorum. En değerlimsin. ❤️
         </p>
         <button onclick="goToCounter()">Devam et</button>
       </div>
     </div>
 
     <!-- 2️⃣ Sayaç ekranı -->
-    <div class="screen hidden" id="screen3">
+    <div class="screen hidden" id="screen4">
       <div class="card">
         <h1>Sevgilim</h1>
         <p>İlk günden bu yana</p>
 
         <div class="counter">
+          <div class="box">
+            <div class="number" id="years">0</div>
+            Yıl
+          </div>
+          <div class="box">
+            <div class="number" id="months">0</div>
+            Ay
+          </div>
           <div class="box">
             <div class="number" id="days">0</div>
             Gün
@@ -163,7 +181,7 @@
     </div>
 
     <!-- 3️⃣ Final ekranı -->
-    <div class="screen hidden" id="screen5">
+    <div class="screen hidden" id="screen6">
       <div class="card">
         <h1>Seni Çok Seviyorum ❤️</h1>
         <p>İyi ki hayatımdasın, iyi ki hayatımsın.</p>
@@ -181,9 +199,16 @@
         if (navigator.vibrate) navigator.vibrate(100);
       }
 
-      function goToCounter() {
+      function goToMessage2() {
         document.getElementById("screen2").classList.add("hidden");
         document.getElementById("screen3").classList.remove("hidden");
+
+        if (navigator.vibrate) navigator.vibrate(100);
+      }
+
+      function goToCounter() {
+        document.getElementById("screen3").classList.add("hidden");
+        document.getElementById("screen4").classList.remove("hidden");
 
         if (navigator.vibrate) navigator.vibrate(100);
 
@@ -192,29 +217,75 @@
       }
 
       function goToFinal() {
-        document.getElementById("screen3").classList.add("hidden");
-        document.getElementById("screen5").classList.remove("hidden");
+        document.getElementById("screen4").classList.add("hidden");
+        document.getElementById("screen6").classList.remove("hidden");
 
         clearInterval(timer);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       }
 
       function updateCounter() {
-        let diff = Math.floor((new Date() - startDate) / 1000);
+        const now = new Date();
 
-        const days = Math.floor(diff / 86400);
-        diff %= 86400;
-        const hours = Math.floor(diff / 3600);
-        diff %= 3600;
-        const minutes = Math.floor(diff / 60);
-        const seconds = diff % 60;
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
 
-        daysEl.innerText = days;
-        hoursEl.innerText = hours;
-        minutesEl.innerText = minutes;
-        secondsEl.innerText = seconds;
+        if (seconds < 0) {
+          seconds += 60;
+          minutes--;
+        }
+        if (minutes < 0) {
+          minutes += 60;
+          hours--;
+        }
+        if (hours < 0) {
+          hours += 24;
+          days--;
+        }
+
+        if (days < 0) {
+          const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += previousMonth.getDate();
+          months--;
+        }
+
+        if (months < 0) {
+          months += 12;
+          years--;
+        }
+
+        // Değerleri yazdır
+        document.getElementById("years").innerText = years;
+        document.getElementById("months").innerText = months;
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+        document.getElementById("seconds").innerText = seconds;
+
+        // --- GİZLEME MANTIĞI BURADA ---
+        // Eğer yıl 0 ise yıl kutusunu gizle, değilse göster
+        const yearsBox = document.getElementById("years").parentElement;
+        if (years === 0) {
+          yearsBox.style.display = "none";
+        } else {
+          yearsBox.style.display = "block";
+        }
+
+        // İstersen aynı şeyi ay için de yapabilirsin (İlişkinin ilk ayı içindeyken 0 Ay gözükmesin dersen):
+        const monthsBox = document.getElementById("months").parentElement;
+        if (years === 0 && months === 0) {
+          monthsBox.style.display = "none";
+        } else {
+          monthsBox.style.display = "block";
+        }
       }
 
+      const yearsEl = document.getElementById("years");
+      const monthsEl = document.getElementById("months");
       const daysEl = document.getElementById("days");
       const hoursEl = document.getElementById("hours");
       const minutesEl = document.getElementById("minutes");
