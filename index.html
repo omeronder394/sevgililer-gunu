@@ -185,6 +185,7 @@
       <div class="card">
         <h1>Seni Çok Seviyorum ❤️</h1>
         <p>İyi ki hayatımdasın, iyi ki hayatımsın.</p>
+        <button onclick="restartApp()">Yeniden Başlat</button>
       </div>
     </div>
 
@@ -193,6 +194,7 @@
       let timer;
 
       function goToMessage() {
+        document.getElementById("screen6").classList.add("hidden");
         document.getElementById("screen1").classList.add("hidden");
         document.getElementById("screen2").classList.remove("hidden");
 
@@ -222,6 +224,19 @@
 
         clearInterval(timer);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      }
+
+      function restartApp() {
+        document.getElementById("screen6").classList.add("hidden");
+        document.getElementById("screen4").classList.add("hidden");
+        document.getElementById("screen3").classList.add("hidden");
+        document.getElementById("screen2").classList.add("hidden");
+
+        // Sadece ilk ekranı göster
+        document.getElementById("screen1").classList.remove("hidden");
+
+        // Eğer sayaç çalışıyorsa durdur
+        clearInterval(timer);
       }
 
       function updateCounter() {
@@ -267,7 +282,6 @@
         document.getElementById("seconds").innerText = seconds;
 
         // --- GİZLEME MANTIĞI BURADA ---
-        // Eğer yıl 0 ise yıl kutusunu gizle, değilse göster
         const yearsBox = document.getElementById("years").parentElement;
         if (years === 0) {
           yearsBox.style.display = "none";
@@ -275,7 +289,6 @@
           yearsBox.style.display = "block";
         }
 
-        // İstersen aynı şeyi ay için de yapabilirsin (İlişkinin ilk ayı içindeyken 0 Ay gözükmesin dersen):
         const monthsBox = document.getElementById("months").parentElement;
         if (years === 0 && months === 0) {
           monthsBox.style.display = "none";
